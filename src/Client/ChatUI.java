@@ -1,12 +1,5 @@
 
 import java.awt.Button;
-/**
- * 聊天窗口的主界面将实现聊天系统的重要功能，再这个界面，同时创建了两个SocketClient，
- * 一个是从登录界面获取的Socket，它主要用来发送和接收消息，聊天窗口的message接收与发送，都转移到ClientThread中
- * 另一个Socket主要被用来接收当前的在线人数，这是我迫不得已的做法，因为目前看来，引用一个新的Socket连接是获取列表最为方便的做法
- * 
- * 还将实现的功能是，与某人特定聊天。。。。
- */
 import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
@@ -96,27 +89,7 @@ public class ChatUI extends JFrame
 	private JTextField tfFind;
 	private JButton btnGroup;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					ChatUI frame = new ChatUI();
-					frame.setVisible(true);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
@@ -137,11 +110,11 @@ public class ChatUI extends JFrame
 			e1.printStackTrace();
 		}
 		this.client = new Thread(new clientThread(clientSocket, inArea, this));
-		this.client.start();// 开启线程
+		this.client.start();// start thread
 		this.ip = ip;
 		try
 		{
-			this.listSocket = new Socket(ip, 34344);// 在线用户列表线程
+			this.listSocket = new Socket(ip, 34344);// start listThread
 		}
 		catch (UnknownHostException e)
 		{
@@ -152,18 +125,7 @@ public class ChatUI extends JFrame
 			e.printStackTrace();
 		}
 
-		// File reader = new File("/Users/jackieliu/Desktop/" + user + ".txt");
-		// if( reader.exists()) {
-		// BufferedReader br = new BufferedReader(new FileReader(reader)); //
-		// 建立一个对象，它把文件内容转成计算机能读懂的语言
-		// String line = br.readLine();
-		// inArea.append(line+"\n");
-		// while ((line = br.readLine()) != null) {
-		// inArea.append(line+"\n");
-		// }
-		// br.close();
-		// }
-
+		
 		// file
 		fileReceiveWait = new FileReceiveWait("Unkown");
 	}
@@ -208,7 +170,6 @@ public class ChatUI extends JFrame
 						HttpURLConnection connection = (HttpURLConnection) getUrl.openConnection();
 						connection.connect();
 
-						// 取得输入流，并使用Reader读取
 						BufferedReader reader = new BufferedReader(
 								new InputStreamReader(connection.getInputStream(), "utf-8"));
 						StringBuffer sb = new StringBuffer();
@@ -218,7 +179,6 @@ public class ChatUI extends JFrame
 							sb.append(line);
 						}
 						reader.close();
-						// 断开连接
 						connection.disconnect();
 						String[] ss = new String[10];
 						String s = sb.toString();
@@ -253,7 +213,7 @@ public class ChatUI extends JFrame
 				}
 
 				inArea.append("you send to " + receieverID + " : " + outArea.getText() + "\n");
-				// client.send(message);// 客户端发送信息
+				// client.send(message);// 
 				// tfAll.setText("All");
 				outArea.setText("");
 				inArea.setCaretPosition(inArea.getText().length());// 控制光标下移
@@ -295,12 +255,12 @@ public class ChatUI extends JFrame
 			{
 				JDialog help = new JDialog(ChatUI.this, "Help", true);
 				help.getContentPane().setLayout(new FlowLayout());
-				JLabel helpContent = new JLabel("通过下方的聊天窗口，");
-				JLabel helpContent5 = new JLabel("与聊天室的好友交流。");
-				JLabel helpContent2 = new JLabel("左侧可以查看当前在线人数。");
-				JLabel helpContent3 = new JLabel("双击列表中的姓名，");
-				JLabel helpContent4 = new JLabel("可以单独向其发送信息。");
-				JLabel helpContent6 = new JLabel("Ctrl+Enter快捷键可以快速发送信息。");
+				JLabel helpContent = new JLabel("");
+				JLabel helpContent5 = new JLabel("");
+				JLabel helpContent2 = new JLabel("");
+				JLabel helpContent3 = new JLabel("");
+				JLabel helpContent4 = new JLabel("");
+				JLabel helpContent6 = new JLabel("");
 				help.setBounds(550, 250, 240, 180);
 				help.setResizable(false);
 				help.getContentPane().add(helpContent);
@@ -339,14 +299,14 @@ public class ChatUI extends JFrame
 					{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					} // 建立一个对象，它把文件内容转成计算机能读懂的语言
+					} 
 
 				}
 			}
 		});
 
 		addWindowListener(new WindowAdapter()
-		{// 防止直接点关闭后台线程一直异常
+		{// 
 			public void windowClosing(WindowEvent e)
 			{
 				if (client != null)
@@ -366,7 +326,7 @@ public class ChatUI extends JFrame
 			{
 				if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_ENTER))
 				{
-					// 快捷键发送
+					
 					sendMsg.println("MSG");
 					sendMsg.println(user);
 					sendMsg.println(receieverID);

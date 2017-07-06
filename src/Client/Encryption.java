@@ -46,7 +46,7 @@ public class Encryption
 	// 解密
 	public static String decrypt(String ciphertext) throws Exception
 	{
-		String secret = "nihaoma";// 密钥
+		String secret = "nihaoma";// 
 		MessageDigest dig = MessageDigest.getInstance(SEC_NORMALIZE_ALG);
 		byte[] key = dig.digest(secret.getBytes(ENC));
 		SecretKeySpec secKey = new SecretKeySpec(key, ALG);

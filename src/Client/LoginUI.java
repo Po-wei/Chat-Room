@@ -1,11 +1,6 @@
 
 /**
- * 在这个界面将实现登录功能与连接服务器功能，
- * 首先要先于服务器去得连接，为了确保程序的可用性，每一个按钮处都设置了这个前提，
- * 通过点击登录将用户信息发送到服务端进行核对，然后根据服务端反馈的信息来判断当前用户能否进入，
- * 如果反馈信息提示不能进入，就会根据信息来判断是哪一步错了，这一点使用switch来提高效率，因为选择题要比if else判断题更高效
- * 同时这个界面还实现了向RegDialogUI注册界面的跳转，具体的操作都交给了RegDialogUI
- * 
+ * This is the GUI of the login window.
  */
 import java.awt.Dialog;
 import java.awt.EventQueue;
@@ -339,10 +334,10 @@ public class LoginUI extends JFrame
 	}
 
 	public void register(Socket client)
-	{// Dialog注册服务窗体
+	{
 		regDialog = new RegisterUI(client);
 		regDialog.setModal(true);
-		// “有模式”意味着该窗口打开时其他窗口都被屏蔽了，你可以试试，在此情况下，点击程序的其他窗口是不允许的。
+		// lock other panel when RegisterUI launch
 		regDialog.setVisible(true);
 	}
 }
