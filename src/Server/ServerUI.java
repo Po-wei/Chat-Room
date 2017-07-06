@@ -52,7 +52,6 @@ public class ServerUI extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setResizable(false);
 		setContentPane(contentPane);
-		
 
 		lblPort = new JLabel("Port :");
 		lblPort.setBounds(5, 9, 60, 20);
@@ -65,7 +64,7 @@ public class ServerUI extends JFrame
 		textField.setFont(new Font("Verdana", Font.PLAIN, 12));
 		textField.setText("8787");
 		textField.setColumns(10);
-		
+
 		closeButton = new JButton("CLOSE");
 		closeButton.setBounds(215, 5, 92, 26);
 		closeButton.setFont(new Font("Verdana", Font.PLAIN, 12));
@@ -77,7 +76,7 @@ public class ServerUI extends JFrame
 				stopServer();
 			}
 		});
-		
+
 		lauchButton = new JButton("OPEN");
 		lauchButton.setBounds(125, 5, 87, 26);
 		lauchButton.setFont(new Font("Verdana", Font.PLAIN, 12));
@@ -88,8 +87,6 @@ public class ServerUI extends JFrame
 				startServer();
 			}
 		});
-
-		
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(5, 34, 398, 372);
@@ -139,14 +136,14 @@ public class ServerUI extends JFrame
 	{
 		if (server == null)
 		{
-			//create a server thread
+			// create a server thread
 			server = new Server(Integer.parseInt(textField.getText()), textArea);
 			server.start();
-//			regServer = new RegisterThread(textArea);
-//			regServer.start();
+			// regServer = new RegisterThread(textArea);
+			// regServer.start();
 			lauchButton.setEnabled(false);
 			closeButton.setEnabled(true);
-//			System.out.println("im am here");
+			// System.out.println("im am here");
 		}
 	}
 
@@ -154,7 +151,7 @@ public class ServerUI extends JFrame
 	{
 		if (server != null)
 		{
-//			server.exit(); //TODO
+			// server.exit(); //TODO
 			server = null;
 			lauchButton.setEnabled(true);
 			closeButton.setEnabled(false);
@@ -169,7 +166,7 @@ public class ServerUI extends JFrame
 	{
 		String path = "D:\\log";
 		String filename = "historical.log";
-		File logData = new File(path,filename);
+		File logData = new File(path, filename);
 		if (!logData.exists())
 		{
 			logData.createNewFile();

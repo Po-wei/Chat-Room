@@ -8,12 +8,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ListThread extends Thread
 {
 	private HashMap<String, Socket> m_userMap;
-//	private HashMap<String, Boolean> m_userSate;
+	// private HashMap<String, Boolean> m_userSate;
 	private Set<String> userList;
 	private ServerSocket server;
 	private File userFile;
 	private Lock fileLock = new ReentrantLock();
-	
 
 	public ListThread(HashMap<String, Socket> userMap)
 	{
@@ -22,7 +21,7 @@ public class ListThread extends Thread
 		{
 			server = new ServerSocket(34344);
 			m_userMap = userMap;
-//			m_userSate = null;
+			// m_userSate = null;
 		}
 		catch (IOException e)
 		{
@@ -39,7 +38,7 @@ public class ListThread extends Thread
 			{
 				Socket clientSocket = server.accept();
 				userList = new HashSet<String>();
-				new Thread(new innerListThread(clientSocket,m_userMap,userList)).start();
+				new Thread(new innerListThread(clientSocket, m_userMap, userList)).start();
 			}
 		}
 		catch (IOException e)
@@ -54,11 +53,11 @@ public class ListThread extends Thread
 		private Socket m_clientSocket;
 		private HashMap<String, Socket> m_userMap;
 		private Set<String> m_userList;
-		
+
 		private PrintWriter sender;
 		private StringBuilder info;
 
-		public innerListThread(Socket client,HashMap<String, Socket> userMap, Set<String> userList)
+		public innerListThread(Socket client, HashMap<String, Socket> userMap, Set<String> userList)
 		{
 			m_clientSocket = client;
 			m_userMap = userMap;
@@ -69,17 +68,18 @@ public class ListThread extends Thread
 		{
 			try
 			{
-			    sender = new PrintWriter(m_clientSocket.getOutputStream(), true);
-				
+				sender = new PrintWriter(m_clientSocket.getOutputStream(), true);
+
 				while (true)
 				{
 					try
 					{
 						Thread.sleep(300);
-						
-						if(fileLock.tryLock()) // trylock  won't block if don't get lock.
+
+						if (fileLock.tryLock()) // trylock won't block if don't
+												// get lock.
 						{
-							userFile = new File("E:\\list.txt"); // all 
+							userFile = new File("E:\\list.txt"); // all
 							BufferedReader userListReader = new BufferedReader(new FileReader(userFile));
 							String temp;
 							while ((temp = userListReader.readLine()) != null)
@@ -89,13 +89,13 @@ public class ListThread extends Thread
 							}
 							fileLock.unlock();
 						}
-						
+
 						info = new StringBuilder();
 						Set<String> keySet = m_userMap.keySet();
-						
-						for(String s : m_userList)
+
+						for (String s : m_userList)
 						{
-							if(keySet.contains(s))
+							if (keySet.contains(s))
 							{
 								info.append("*" + s + ":");
 							}
@@ -105,7 +105,7 @@ public class ListThread extends Thread
 							}
 						}
 						sender.println(info);
-						
+
 					}
 					catch (InterruptedException e)
 					{
@@ -135,4 +135,3 @@ public class ListThread extends Thread
 
 	}
 }
-

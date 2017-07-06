@@ -29,8 +29,8 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-public class LoginUI extends JFrame {
-
+public class LoginUI extends JFrame
+{
 
 	private static final long serialVersionUID = -8542876911761120960L;
 	private JPanel contentPane;
@@ -46,30 +46,37 @@ public class LoginUI extends JFrame {
 	private String ip = null;
 	private JButton btnRegister;
 	private JButton btnConnect;
-	
-	public static void main(String[] args) {
-		try 
+
+	public static void main(String[] args)
+	{
+		try
 		{
-		    for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-		    {
-		        if("Nimbus".equals(info.getName()))
-		        {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+			{
+				if ("Nimbus".equals(info.getName()))
+				{
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
-			// If Nimbus is not available, you can set the GUI to another look and feel.
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
 			System.out.println("theme initialization failed");
 		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
 					LoginUI frame = new LoginUI();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -79,8 +86,8 @@ public class LoginUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public LoginUI() {
-		
+	public LoginUI()
+	{
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(120, 120, 411, 389);
@@ -88,11 +95,11 @@ public class LoginUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setTitle("Client User Interface");
-		
+
 		lblServer = new JLabel("Server\uFF1A");
 		lblServer.setLocation(21, 8);
 		lblServer.setSize(81, 43);
-		
+
 		tfServer = new JTextField();
 		tfServer.setLocation(91, 16);
 		tfServer.setSize(134, 27);
@@ -102,19 +109,26 @@ public class LoginUI extends JFrame {
 		btnConnect = new JButton("Connect");
 		btnConnect.setLocation(244, 16);
 		btnConnect.setSize(126, 27);
-		//Button of Connect
-		btnConnect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String ip = tfServer.getText();//  "10.103.221.231"
+		// Button of Connect
+		btnConnect.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String ip = tfServer.getText();// "10.103.221.231"
 				int port = 8787;
-				try {
+				try
+				{
 					client = new Socket(ip, port);
 					LoginUI.this.ip = ip;
 					setTitle(getTitle() + "...connect successfully");
 					btnConnect.setEnabled(false);
-				} catch (UnknownHostException e1) {
+				}
+				catch (UnknownHostException e1)
+				{
 					e1.printStackTrace();
-				} catch (IOException e1) {
+				}
+				catch (IOException e1)
+				{
 					JDialog error = new JDialog(LoginUI.this, "Connection error", true);
 					error.getContentPane().add(new Label("Server doesn't response！\r\n Please reconnect"));
 					error.setBounds(400, 200, 200, 100);
@@ -123,12 +137,12 @@ public class LoginUI extends JFrame {
 				}
 			}
 		});
-		
+
 		lblUsername = new JLabel("Username");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setSize(71, 27);
 		lblUsername.setLocation(54, 74);
-		
+
 		lblPassword = new JLabel("Password");
 		lblPassword.setLocation(54, 133);
 		lblPassword.setSize(71, 27);
@@ -145,11 +159,14 @@ public class LoginUI extends JFrame {
 		btnLogin = new JButton("Login");
 		btnLogin.setSize(71, 56);
 		btnLogin.setLocation(86, 239);
-		
-		//Button of Login
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (tfUsr.getText().length() == 0 || tfPsw.getPassword().length == 0) {
+
+		// Button of Login
+		btnLogin.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (tfUsr.getText().length() == 0 || tfPsw.getPassword().length == 0)
+				{
 					final Dialog errorLink = new Dialog(LoginUI.this);
 					errorLink.setLayout(new FlowLayout());
 					errorLink.setTitle("Input Error");
@@ -157,16 +174,23 @@ public class LoginUI extends JFrame {
 					errorLink.setBounds(600, 200, 200, 100);
 					JButton liButton = new JButton("OK");
 					errorLink.add(liButton);
-					liButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
+					liButton.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
 							errorLink.dispose();
 						}
 					});
 					errorLink.setVisible(true);
-				} else {
-					if (client != null) {
+				}
+				else
+				{
+					if (client != null)
+					{
 						login(tfUsr.getText(), new String(tfPsw.getPassword()));
-					} else {
+					}
+					else
+					{
 						final Dialog errorLink = new Dialog(LoginUI.this);
 						errorLink.setLayout(new FlowLayout());
 						errorLink.setTitle("Connect Error");
@@ -174,8 +198,10 @@ public class LoginUI extends JFrame {
 						errorLink.setBounds(600, 200, 200, 100);
 						JButton okButton = new JButton("OK");
 						errorLink.add(okButton);
-						okButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
+						okButton.addActionListener(new ActionListener()
+						{
+							public void actionPerformed(ActionEvent e)
+							{
 								errorLink.dispose();
 							}
 						});
@@ -185,16 +211,18 @@ public class LoginUI extends JFrame {
 			}
 		});
 
-
 		btnRegister = new JButton("Register");
 		btnRegister.setLocation(219, 246);
 		btnRegister.setSize(81, 43);
-		//Button of register
-		btnRegister.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		// Button of register
+		btnRegister.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				if (client != null)
 					register(client);
-				else {
+				else
+				{
 					final Dialog errorLink = new Dialog(LoginUI.this);
 					errorLink.setLayout(new FlowLayout());
 					errorLink.setTitle("Connect Error");
@@ -202,8 +230,10 @@ public class LoginUI extends JFrame {
 					errorLink.setBounds(600, 200, 200, 100);
 					JButton okButton = new JButton("OK");
 					errorLink.add(okButton);
-					okButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
+					okButton.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
 							errorLink.dispose();
 						}
 					});
@@ -211,7 +241,7 @@ public class LoginUI extends JFrame {
 				}
 			}
 		});
-		
+
 		contentPane.add(tfUsr);
 		contentPane.add(tfPsw);
 		contentPane.add(tfServer);
@@ -226,21 +256,24 @@ public class LoginUI extends JFrame {
 
 	}
 
-	public void login(String name, String password) {
-		try {
+	public void login(String name, String password)
+	{
+		try
+		{
 			PrintWriter send = new PrintWriter(client.getOutputStream(), true);
 			BufferedReader receive = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			send.println("LOG");
 			send.println(name);
 			send.println(password);
 			String header = receive.readLine();
-			//String header = receive.readLine();//header = CSM
+			// String header = receive.readLine();//header = CSM
 			String data = receive.readLine();
-			switch (data) {
+			switch (data)
+			{
 			case "Success":
 				System.out.println(header + " " + data);
-				new ChatUI(client, name ,ip).setVisible(true);
-				dispose();//close LoginUI
+				new ChatUI(client, name, ip).setVisible(true);
+				dispose();// close LoginUI
 				break;
 			case "Failed":
 				final Dialog faError = new Dialog(this, "Login Error", true);// 使用Jdialog将出现解析问题
@@ -249,8 +282,10 @@ public class LoginUI extends JFrame {
 				faError.setLayout(new FlowLayout());
 				JButton faButton = new JButton("OK");
 				faError.add(faButton);
-				faButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				faButton.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
 						faError.dispose();
 					}
 				});
@@ -263,8 +298,10 @@ public class LoginUI extends JFrame {
 				reError.setLayout(new FlowLayout());
 				JButton reButton = new JButton("OK");
 				reError.add(reButton);
-				reButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				reButton.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
 						reError.dispose();
 					}
 				});
@@ -277,8 +314,10 @@ public class LoginUI extends JFrame {
 				blankError.setLayout(new FlowLayout());
 				JButton blButton = new JButton("OK");
 				blankError.add(blButton);
-				blButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				blButton.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
 						blankError.dispose();
 					}
 				});
@@ -288,17 +327,22 @@ public class LoginUI extends JFrame {
 				break;
 			}
 
-		} catch (UnknownHostException e) {
+		}
+		catch (UnknownHostException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
 
-	public void register(Socket client) {//Dialog注册服务窗体
+	public void register(Socket client)
+	{// Dialog注册服务窗体
 		regDialog = new RegisterUI(client);
 		regDialog.setModal(true);
-		//“有模式”意味着该窗口打开时其他窗口都被屏蔽了，你可以试试，在此情况下，点击程序的其他窗口是不允许的。
+		// “有模式”意味着该窗口打开时其他窗口都被屏蔽了，你可以试试，在此情况下，点击程序的其他窗口是不允许的。
 		regDialog.setVisible(true);
 	}
 }

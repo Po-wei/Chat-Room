@@ -1,5 +1,4 @@
 
-
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +22,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class FileSend {
+public class FileSend
+{
 	// 与文件有关的
 	private File fileout = null;
 	private FileInputStream fileInputStream = null;
@@ -46,10 +46,11 @@ public class FileSend {
 	private String ipString = null;
 	private Socket socket = null;
 	private boolean sendOk = false;
-	
+
 	private File[] files = null;
 
-	public FileSend(String ipString, int port) {
+	public FileSend(String ipString, int port)
+	{
 		this.ipString = ipString;
 		this.port = port;
 		frameMain = new JFrame("发送文件");
@@ -88,19 +89,23 @@ public class FileSend {
 		frameMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
-	public long getFileLength() {
+	public long getFileLength()
+	{
 		return fileLength;
 	}
 
-	public String getFileName() {
+	public String getFileName()
+	{
 		return fileName;
 	}
-	
-	public void setIP(String ip) {
+
+	public void setIP(String ip)
+	{
 		this.ipString = ip;
 	}
 
-	private void closeStream() throws IOException {
+	private void closeStream() throws IOException
+	{
 		outputStream.flush();
 		outputStream.close();
 		bufferedOutputStreamNet.flush();
@@ -109,7 +114,8 @@ public class FileSend {
 		fileInputStream.close();
 	}
 
-	private void addListener() {
+	private void addListener()
+	{
 		btnSelect.addActionListener(new BtnListener());
 		btnSend.addActionListener(new BtnListener());
 		btnCancel.addActionListener(new BtnListener());
@@ -118,26 +124,35 @@ public class FileSend {
 	/*
 	 * 监听点击按钮后的事件
 	 */
-	class BtnListener implements ActionListener {
+	class BtnListener implements ActionListener
+	{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			if (arg0.getSource() == btnSelect) {
+		public void actionPerformed(ActionEvent arg0)
+		{
+			if (arg0.getSource() == btnSelect)
+			{
 				selectFile();
-			} else if (arg0.getSource() == btnSend) {
+			}
+			else if (arg0.getSource() == btnSend)
+			{
 				sendFile();
 				btnSelect.setEnabled(false);
 				btnSend.setEnabled(false);
-			} else if (arg0.getSource() == btnCancel) {
-				int n = JOptionPane.showConfirmDialog(frameMain, "确定终止吗？",
-						"终止文件传输", JOptionPane.YES_NO_OPTION);
-				if (n == JOptionPane.YES_OPTION) {
-					try {
+			}
+			else if (arg0.getSource() == btnCancel)
+			{
+				int n = JOptionPane.showConfirmDialog(frameMain, "确定终止吗？", "终止文件传输", JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION)
+				{
+					try
+					{
 						socket.close();
-						JOptionPane.showMessageDialog(frameMain, "文件传输中止！"
-								+ "文件已传输" + progressBar.getValue() + "%");
+						JOptionPane.showMessageDialog(frameMain, "文件传输中止！" + "文件已传输" + progressBar.getValue() + "%");
 						frameMain.setVisible(false);
-					} catch (IOException e) {
+					}
+					catch (IOException e)
+					{
 						e.printStackTrace();
 					}
 					frameMain.dispose();
@@ -145,135 +160,154 @@ public class FileSend {
 			}
 		}
 
-		private void selectFile() {
-			
+		private void selectFile()
+		{
+
 			JFileChooser fcDlg = new JFileChooser();
-		      fcDlg.setDialogTitle("请选择文件...");
-		      FileNameExtensionFilter filter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
-		    		  //("文本文件(*.txt;*.kcd)", "txt", "kcd");
-		      //fcDlg.setFileFilter(filter);
-//		      int returnVal = fcDlg.showOpenDialog(null);
-//		      if (returnVal == JFileChooser.APPROVE_OPTION) {
-//		        String filepath = fcDlg.getSelectedFile().getPath();
-//		        textFieldSelect.setText(filepath);
-//		      }
-		      fcDlg.setMultiSelectionEnabled(true);
-		      fcDlg.showOpenDialog(frameMain);
-		      files = fcDlg.getSelectedFiles();
-		      textFieldSelect.setText(fcDlg.getCurrentDirectory()+files[0].getName());
-		      for(int i = 0; i < files.length; i++) {
-		    	  System.out.println(files[i].getName());
-		      }
-			//fcDlg.setVisible(true);
-//			FileDialog fileDialog = new FileDialog(frameMain, "选择文件",
-//					FileDialog.LOAD);
-//			fileDialog.setVisible(true);
-//
-//			if (fileDialog.getFile() != null) {
-//				fileDialog.setMultipleMode(true);
-//				String fileName = fileDialog.getDirectory()
-//						+ fileDialog.getFile();
-//				textFieldSelect.setText(fileName);
-//				try {
-//					fileout = new File(fileName);
-//					fileInputStream = new FileInputStream(fileout);
-//					bufferedInputStreamFile = new BufferedInputStream(
-//							fileInputStream);
-//				} catch (FileNotFoundException e) {
-//					e.printStackTrace();
-//				}
-//			}
+			fcDlg.setDialogTitle("请选择文件...");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
+			// ("文本文件(*.txt;*.kcd)", "txt", "kcd");
+			// fcDlg.setFileFilter(filter);
+			// int returnVal = fcDlg.showOpenDialog(null);
+			// if (returnVal == JFileChooser.APPROVE_OPTION) {
+			// String filepath = fcDlg.getSelectedFile().getPath();
+			// textFieldSelect.setText(filepath);
+			// }
+			fcDlg.setMultiSelectionEnabled(true);
+			fcDlg.showOpenDialog(frameMain);
+			files = fcDlg.getSelectedFiles();
+			textFieldSelect.setText(fcDlg.getCurrentDirectory() + files[0].getName());
+			for (int i = 0; i < files.length; i++)
+			{
+				System.out.println(files[i].getName());
+			}
+			// fcDlg.setVisible(true);
+			// FileDialog fileDialog = new FileDialog(frameMain, "选择文件",
+			// FileDialog.LOAD);
+			// fileDialog.setVisible(true);
+			//
+			// if (fileDialog.getFile() != null) {
+			// fileDialog.setMultipleMode(true);
+			// String fileName = fileDialog.getDirectory()
+			// + fileDialog.getFile();
+			// textFieldSelect.setText(fileName);
+			// try {
+			// fileout = new File(fileName);
+			// fileInputStream = new FileInputStream(fileout);
+			// bufferedInputStreamFile = new BufferedInputStream(
+			// fileInputStream);
+			// } catch (FileNotFoundException e) {
+			// e.printStackTrace();
+			// }
+			// }
 		}
 
-		private void sendFile() {
-				
-				
-				new FileSendThread().start();
+		private void sendFile()
+		{
 
-	}
+			new FileSendThread().start();
 
-	class FileSendThread extends Thread {
-		
-		
-		@Override
-		public void run() {
-			
-			for(int k = 0; k < files.length; k++) {
-				System.out.println("file " +ipString);
-				try {
-					socket = new Socket(ipString, port);
-				} catch (UnknownHostException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				System.out.println("In:" + files[k].getName() + " " + files[k].getPath());
-				fileout = files[k];
-				try {
-					fileInputStream = new FileInputStream(fileout);
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				bufferedInputStreamFile = new BufferedInputStream(
-						fileInputStream);
-				if (fileout != null) {
-					try {
-						// TODO 获取文件长度和名称 接收时使用
-						fileLength = fileout.length();
-						fileName = fileout.getName();
-						inputStream = new DataInputStream(socket.getInputStream());
-						bufferedOutputStreamNet = new BufferedOutputStream(
-								socket.getOutputStream());
-						outputStream = new DataOutputStream(bufferedOutputStreamNet);
-						int n = 0;
-						int i = 0;
-						int progress = 0;
-						// TODO 首先 发送文件名和长度
-						outputStream.writeUTF(fileName);
-						outputStream.writeLong(fileLength);
+		}
 
-						while ((n = bufferedInputStreamFile.read()) != -1) {
-							System.out.println("filepath2"+k);
-							i++;
-							progress = (int) (100 * (i * 1.0 / fileLength));
-							progressBar.setValue(progress);
-							outputStream.write(n);
-							if (i == fileLength) {
-								sendOk = true;
-								JOptionPane.showMessageDialog(frameMain, "发送完成");
-								//System.out.println("filepath"+k);
-								break;
+		class FileSendThread extends Thread
+		{
+
+			@Override
+			public void run()
+			{
+
+				for (int k = 0; k < files.length; k++)
+				{
+					System.out.println("file " + ipString);
+					try
+					{
+						socket = new Socket(ipString, port);
+					}
+					catch (UnknownHostException e2)
+					{
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					catch (IOException e2)
+					{
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					System.out.println("In:" + files[k].getName() + " " + files[k].getPath());
+					fileout = files[k];
+					try
+					{
+						fileInputStream = new FileInputStream(fileout);
+					}
+					catch (FileNotFoundException e1)
+					{
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					bufferedInputStreamFile = new BufferedInputStream(fileInputStream);
+					if (fileout != null)
+					{
+						try
+						{
+							// TODO 获取文件长度和名称 接收时使用
+							fileLength = fileout.length();
+							fileName = fileout.getName();
+							inputStream = new DataInputStream(socket.getInputStream());
+							bufferedOutputStreamNet = new BufferedOutputStream(socket.getOutputStream());
+							outputStream = new DataOutputStream(bufferedOutputStreamNet);
+							int n = 0;
+							int i = 0;
+							int progress = 0;
+							// TODO 首先 发送文件名和长度
+							outputStream.writeUTF(fileName);
+							outputStream.writeLong(fileLength);
+
+							while ((n = bufferedInputStreamFile.read()) != -1)
+							{
+								System.out.println("filepath2" + k);
+								i++;
+								progress = (int) (100 * (i * 1.0 / fileLength));
+								progressBar.setValue(progress);
+								outputStream.write(n);
+								if (i == fileLength)
+								{
+									sendOk = true;
+									JOptionPane.showMessageDialog(frameMain, "发送完成");
+									// System.out.println("filepath"+k);
+									break;
+								}
 							}
-						}
-						
 
-					} catch (IOException e) {
-						if (sendOk) {
-						} else {
-							JOptionPane.showMessageDialog(frameMain, "文件传输终止"
-									+ "文件已传输" + progressBar.getValue() + "%"
-									+ fileLength * (progressBar.getValue() / 100.0)
-									+ "B");
-							frameMain.dispose();
 						}
+						catch (IOException e)
+						{
+							if (sendOk)
+							{
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(frameMain, "文件传输终止" + "文件已传输" + progressBar.getValue()
+										+ "%" + fileLength * (progressBar.getValue() / 100.0) + "B");
+								frameMain.dispose();
+							}
+							e.printStackTrace();
+						}
+					}
+					try
+					{
+						// closeStream();
+						socket.close();
+					}
+					catch (IOException e)
+					{
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-				try {
-					//closeStream();
-					socket.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-				frameMain.dispose();
-		}
 
+				frameMain.dispose();
+			}
+
+		}
 	}
-}
 }

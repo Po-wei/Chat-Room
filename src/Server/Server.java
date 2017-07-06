@@ -22,7 +22,8 @@ public class Server extends Thread
 		this.port = port;
 		this.area = textArea;
 	}
-	//MAIN THREAD!!!!!!!!!!!
+
+	// MAIN THREAD!!!!!!!!!!!
 	public void run()
 	{
 		InetAddress ip = null;
@@ -37,25 +38,22 @@ public class Server extends Thread
 		try
 		{
 			server = new ServerSocket(port, 100);
-//			register(area);
+			// register(area);
 			area.append("Server address :" + ip + "\nPort number : " + port + "\r\n");
 			area.append("Server start !\r\n");
-			
+
 			listUpdateThread = new ListThread(userMap);
 			listUpdateThread.start();
-			
-			
-			
-			
+
 			int i = 0;
 			while (!stop)
 			{
-				Socket client = server.accept();// Blocking thread 
+				Socket client = server.accept();// Blocking thread
 				System.out.println(client.getInetAddress());
 				System.out.println(client.getPort());
-				Thread test = new Thread(new ClientThread(client, userMap,group, area), "ClientThread" + (i++));
+				Thread test = new Thread(new ClientThread(client, userMap, group, area), "ClientThread" + (i++));
 				test.start();
-				
+
 			}
 		}
 		catch (IOException e)
@@ -64,30 +62,29 @@ public class Server extends Thread
 		}
 	}
 
-	
-//	public void exit()
-//	{
-//		try
-//		{
-//	//TODO USE VECTOR TO MANGE
-//			if (server != null)
-//			{
-//				this.stop = true;
-//				this.interrupt();
-//				listUpdateThread.interrupt();
-//				server.close();
-//				Set<String> keySet = userMap.keySet();
-//
-//				for(String s : keySet)
-//				{
-//					userMap.get(s).stop();
-//				}
-//				area.append("Close Server\r\n");
-//			}
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
-//	}
+	// public void exit()
+	// {
+	// try
+	// {
+	// //TODO USE VECTOR TO MANGE
+	// if (server != null)
+	// {
+	// this.stop = true;
+	// this.interrupt();
+	// listUpdateThread.interrupt();
+	// server.close();
+	// Set<String> keySet = userMap.keySet();
+	//
+	// for(String s : keySet)
+	// {
+	// userMap.get(s).stop();
+	// }
+	// area.append("Close Server\r\n");
+	// }
+	// }
+	// catch (IOException e)
+	// {
+	// e.printStackTrace();
+	// }
+	// }
 }

@@ -1,5 +1,4 @@
 
-
 import java.awt.EventQueue;
 
 import javax.swing.UIManager;
@@ -9,18 +8,18 @@ public class ServerMain
 {
 	public static void main(String[] args)
 	{
-		try 
+		try
 		{
-		    for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-		    {
-		        if("Nimbus".equals(info.getName()))
-		        {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+			{
+				if ("Nimbus".equals(info.getName()))
+				{
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			System.out.println("theme initialization failed");
 		}

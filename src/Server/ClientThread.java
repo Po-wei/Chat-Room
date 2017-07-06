@@ -17,30 +17,30 @@ import javax.swing.JTextArea;
 
 public class ClientThread implements Runnable
 {
-	
+
 	private HashMap<String, Socket> userList = null;
 	private HashMap<String, String[]> m_group;
 	private JTextArea area = null;
-	private boolean login = false;// 
-	
-	//member start with m_...
+	private boolean login = false;//
+
+	// member start with m_...
 	private Socket m_client = null;
 	private String m_user;
 	private String m_password;
 	private BufferedReader m_receiver = null;
 	private PrintWriter m_sender = null;
 	private String message = null;
-	
-	
-	private File userFile; //global reference
 
-	public ClientThread(Socket client, HashMap<String, Socket> userList,HashMap<String, String[]> group, JTextArea area) throws IOException
+	private File userFile; // global reference
+
+	public ClientThread(Socket client, HashMap<String, Socket> userList, HashMap<String, String[]> group,
+			JTextArea area) throws IOException
 	{
-		this.m_client = client;  //pass reference 
+		this.m_client = client; // pass reference
 		this.userList = userList;
 		this.area = area;
 		this.m_group = group;
-		
+
 		userFile = new File("E:\\list.txt");
 		if (!userFile.exists())
 		{
@@ -63,7 +63,8 @@ public class ClientThread implements Runnable
 		}
 
 	}
-	//Main function
+
+	// Main function
 	public void run()
 	{
 		try
@@ -72,14 +73,13 @@ public class ClientThread implements Runnable
 			InetAddress ip = m_client.getInetAddress();
 			m_receiver = new BufferedReader(new InputStreamReader(m_client.getInputStream()));
 			m_sender = new PrintWriter(m_client.getOutputStream(), true);
-			
-			great_loop:
-			while(true)
+
+			great_loop: while (true)
 			{
-				//READ HEADER
+				// READ HEADER
 				type = m_receiver.readLine();
 				System.out.println("type:" + type);
-				switch(type)
+				switch (type)
 				{
 				case "REG":
 					register();
@@ -99,7 +99,7 @@ public class ClientThread implements Runnable
 					break;
 				case "CMG":
 					String cmg = m_receiver.readLine();
-					if(cmg.equals("offline"))
+					if (cmg.equals("offline"))
 					{
 						exit();
 						break great_loop;
@@ -114,20 +114,20 @@ public class ClientThread implements Runnable
 		{
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("CLient thread stop!");
 	}
-	
+
 	private void register() throws IOException
 	{
-		//lock
+		// lock
 		synchronized (userFile)
 		{
-			//critical section
-			userFile = new  File("E:\\list.txt");
+			// critical section
+			userFile = new File("E:\\list.txt");
 			BufferedReader regList = new BufferedReader(new FileReader(userFile));
 			area.append("Getting information from disk...");
-			
+
 			String name = m_receiver.readLine();
 			String password = m_receiver.readLine();
 			String info = null;
@@ -160,14 +160,14 @@ public class ClientThread implements Runnable
 	public void login() throws IOException, InterruptedException
 	{
 		String info = null;
-		synchronized (userFile) //lock
+		synchronized (userFile) // lock
 		{
-			//critical section
-			userFile = new  File("E:\\list.txt");
+			// critical section
+			userFile = new File("E:\\list.txt");
 			BufferedReader logList = new BufferedReader(new FileReader(userFile));
 			m_user = m_receiver.readLine();
 			m_password = m_receiver.readLine();
-			
+
 			while ((info = logList.readLine()) != null)
 			{
 				String str[] = info.split("::");
@@ -180,10 +180,10 @@ public class ClientThread implements Runnable
 			}
 			if (login)
 			{
-				//POROCOL SEND
+				// POROCOL SEND
 				m_sender.println("CMG");
 				m_sender.println("Success");
-				userList.put(m_user,m_client);
+				userList.put(m_user, m_client);
 				Thread.sleep(100);
 				checkOffline();
 				return;
@@ -200,8 +200,8 @@ public class ClientThread implements Runnable
 					m_sender.println("CMG");
 					m_sender.println("Failed");
 				}
-					
-			} 
+
+			}
 			area.append(m_user + "try to login!\n");
 		}
 	}
@@ -210,7 +210,7 @@ public class ClientThread implements Runnable
 	{
 		try
 		{
-			//TODO notify other thread 
+			// TODO notify other thread
 			userList.remove(m_user);
 			m_sender.println("CMG");
 			m_sender.println("offline");
@@ -235,25 +235,25 @@ public class ClientThread implements Runnable
 
 	private void getMessage() throws IOException
 	{
-		//SETTING OUR PROTOCOL !!!!!!!!!!!!!!
+		// SETTING OUR PROTOCOL !!!!!!!!!!!!!!
 		String src;
 		String dest;
 		src = m_receiver.readLine();
 		dest = m_receiver.readLine();
 		message = m_receiver.readLine();
-		sendMsg(dest,message);
+		sendMsg(dest, message);
 	}
-	
-	private void sendMsg(String dest,String message) throws IOException
+
+	private void sendMsg(String dest, String message) throws IOException
 	{
 		Set<String> userSet = userList.keySet();
 
 		// TODO Check user is online
-		for(String s : userSet)  // C++11 range-base for
+		for (String s : userSet) // C++11 range-base for
 		{
-			if(s.equals(dest))
+			if (s.equals(dest))
 			{
-				//TODO LOCK
+				// TODO LOCK
 				PrintWriter destSock = new PrintWriter(userList.get(s).getOutputStream(), true);
 				destSock.println("MSG");
 				destSock.println(m_user);
@@ -262,24 +262,24 @@ public class ClientThread implements Runnable
 				return;
 			}
 		}
-		
-		if(dest.equals("All"))
+
+		if (dest.equals("All"))
 		{
 			sendToAll(message);
 			return;
 		}
-		
-		//GROUP
-		if( m_group.containsKey(dest))
+
+		// GROUP
+		if (m_group.containsKey(dest))
 		{
 			String[] receivers = m_group.get(dest);
-			for(String str : receivers)
+			for (String str : receivers)
 			{
-				if(str.equals(m_user))
+				if (str.equals(m_user))
 				{
-					for(String s : receivers)
+					for (String s : receivers)
 					{
-						if(!userList.containsKey(s)) //online
+						if (!userList.containsKey(s)) // online
 						{
 							continue;
 						}
@@ -292,14 +292,13 @@ public class ClientThread implements Runnable
 					break;
 				}
 			}
-			
+
 		}
-		
-				
-		//OFFLINE
+
+		// OFFLINE
 		String path = "D:\\offline\\";
-		String filename = dest +".log";
-		File offlineData = new File(path,filename);
+		String filename = dest + ".log";
+		File offlineData = new File(path, filename);
 		if (!offlineData.exists())
 		{
 			offlineData.createNewFile();
@@ -315,27 +314,27 @@ public class ClientThread implements Runnable
 	public void sendToAll(String message) throws IOException
 	{
 		Set<String> keySet = userList.keySet();
-		
-		for(String s : keySet)  // C++11 range-base for
+
+		for (String s : keySet) // C++11 range-base for
 		{
 			PrintWriter destSock = new PrintWriter(userList.get(s).getOutputStream(), true);
-			//TODO LOCK
+			// TODO LOCK
 			destSock.println("MSG");
 			destSock.println(m_user);
 			destSock.println(s);
 			destSock.println(message);
-			
+
 		}
 
 	}
-	
+
 	private void checkOffline() throws IOException
 	{
 		String path = "D:\\offline\\";
-		String filename = m_user +".log";
+		String filename = m_user + ".log";
 		String tempLine;
 		File offlineData = new File(path + filename);
-		
+
 		if (!offlineData.exists())
 		{
 			return;
@@ -347,7 +346,7 @@ public class ClientThread implements Runnable
 			System.out.println(tempLine);
 		}
 		offlineReader.close();
-		if(!offlineData.delete())
+		if (!offlineData.delete())
 		{
 			System.out.println("WRONG");
 		}
@@ -356,45 +355,45 @@ public class ClientThread implements Runnable
 			System.out.println(m_user + "send offline message success!");
 		}
 	}
-	
+
 	private void createGroup() throws IOException
 	{
 		synchronized (userFile)
 		{
 			System.out.println("INFILE");
 			String lineBuffer = m_receiver.readLine();
-			String []groupData = lineBuffer.split(":");
+			String[] groupData = lineBuffer.split(":");
 			String groupName = groupData[0];
-			
+
 			System.out.println(groupName);
-			String []members = groupData[1].split(",");
-			for(int i = 0 ; i < members.length ; i++)
+			String[] members = groupData[1].split(",");
+			for (int i = 0; i < members.length; i++)
 			{
 				System.out.println(members[i]);
 			}
-			m_group.put(groupName,members);
+			m_group.put(groupName, members);
 			PrintWriter writerList = new PrintWriter(new FileOutputStream("E:\\list.txt", true), true);
-			writerList.println(groupName + "::" +"null");
-			
+			writerList.println(groupName + "::" + "null");
+
 		}
 	}
-	
+
 	private void getRequest() throws IOException, InterruptedException
 	{
-		switch(m_receiver.readLine())
+		switch (m_receiver.readLine())
 		{
-		case "0" :
-			//for send
+		case "0":
+			// for send
 			String dest = m_receiver.readLine();
-			if(!userList.containsKey(dest))
+			if (!userList.containsKey(dest))
 				return;
 			Socket destSocket = userList.get(dest);
 			m_sender.println("FILE");
 			m_sender.println("1");
 			m_sender.println(destSocket.getInetAddress());
 			System.out.println(destSocket.getInetAddress());
-			
-			//for recv
+
+			// for recv
 			Thread.sleep(100);
 			PrintWriter destPrinter = new PrintWriter(destSocket.getOutputStream(), true);
 			destPrinter.println("FILE");
@@ -405,7 +404,5 @@ public class ClientThread implements Runnable
 			break;
 		}
 	}
-	
-	
 
 }
