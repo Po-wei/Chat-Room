@@ -25,11 +25,11 @@ public class FileReceiveWait
 	private JTextField textFieldSpeed;
 	private ServerSocket serverSocketFile = null;
 	private Socket socketFile = null;
-	// 与文件有关的
+
 	private File fileReceive = null;
 	private FileOutputStream fileOutputStream = null;
 	private BufferedOutputStream bufferedOutputStream = null;
-	// 与网络有关的
+
 	private DataInputStream dataInputStream = null;
 	private DataOutputStream dataOutputStream = null;
 	private BufferedInputStream bufferedInputStream = null;
@@ -43,18 +43,18 @@ public class FileReceiveWait
 	public FileReceiveWait(String sender)
 	{
 		this.sender = sender;
-		frame = new JFrame("接收文件");
+		frame = new JFrame("Receive File");
 		frame.setBounds(120, 120, 470, 100);
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		frame.getContentPane().add(progressBar);
-		textFieldSpeed = new JTextField("理论上这里显示的是速度");
+		textFieldSpeed = new JTextField("Transmit Rate:");
 		textFieldSpeed.setEditable(false);
 		frame.getContentPane().add(textFieldSpeed);
 		textFieldSpeed.setColumns(10);
-		btnTerminate = new JButton("终止");
+		btnTerminate = new JButton("Stop");
 		frame.getContentPane().add(btnTerminate);
 		frame.setVisible(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -88,13 +88,13 @@ public class FileReceiveWait
 		{
 			if (arg0.getSource() == btnTerminate)
 			{
-				int n = JOptionPane.showConfirmDialog(frame, "确定终止吗？", "终止文件传输", JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(frame, "Are you sure to abort？", "Abort", JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION)
 				{
 					try
 					{
 						socketFile.close();
-						JOptionPane.showMessageDialog(frame, "文件传输中止！" + "文件已传输" + progressBar.getValue() + "%");
+						JOptionPane.showMessageDialog(frame, "transimission abort！" + "File has transmitted" + progressBar.getValue() + "%");
 						frame.setVisible(false);
 					}
 					catch (IOException e)
@@ -128,28 +128,28 @@ public class FileReceiveWait
 					{
 						fileLengthShow = (fileLength / (1024.0 * 1024.0 * 1024.0));
 						n = JOptionPane.showConfirmDialog(frame,
-								sender + "发送文件" + fileName + "大小" + fileLengthShow + "GB" + "，是否接收？", "接收文件确认",
+								sender + "send you" + fileName + "size:" + fileLengthShow + "GB" + "Accept？", "accept!",
 								JOptionPane.YES_NO_OPTION);
 					}
 					else if (fileLength > 1024 * 1024)
 					{
 						fileLengthShow = (fileLength / (1024.0 * 1024.0));
 						n = JOptionPane.showConfirmDialog(frame,
-								sender + "发送文件" + fileName + "大小" + fileLengthShow + "MB" + "，是否接收？", "接收文件确认",
+								sender + "send you" + fileName + "size:" + fileLengthShow + "MB" + "Accept？", "accept!",
 								JOptionPane.YES_NO_OPTION);
 					}
 					else if (fileLength > 1024)
 					{
 						fileLengthShow = (fileLength / (1024.0));
 						n = JOptionPane.showConfirmDialog(frame,
-								sender + "发送文件" + fileName + "大小" + fileLengthShow + "KB" + "，是否接收？", "接收文件确认",
+								sender + "send you" + fileName + "size:" + fileLengthShow + "KB" + "Accept？", "accept!",
 								JOptionPane.YES_NO_OPTION);
 					}
 					else if (fileLength < 1024)
 					{
 						fileLengthShow = fileLength;
 						n = JOptionPane.showConfirmDialog(frame,
-								sender + "发送文件" + fileName + "大小" + fileLengthShow + "B" + "，是否接收？", "接收文件确认",
+								sender + "send you" + fileName + "size:" + fileLengthShow + "B" + "Accept？", "accept!",
 								JOptionPane.YES_NO_OPTION);
 					}
 					if (n == JOptionPane.YES_OPTION)
@@ -203,7 +203,7 @@ public class FileReceiveWait
 					dataOutputStream.write(n);
 					if (i == fileLength)
 					{
-						JOptionPane.showMessageDialog(frame, "文件传输完成");
+						JOptionPane.showMessageDialog(frame, "transmmition done");
 						receiveOk = true;
 						closeStream();
 						frame.dispose();
@@ -222,7 +222,7 @@ public class FileReceiveWait
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(frame, "文件传输终止！");
+					JOptionPane.showMessageDialog(frame, "transimission abort！");
 				}
 				e.printStackTrace();
 			}

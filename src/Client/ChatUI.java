@@ -53,10 +53,6 @@ import java.awt.Font;
 
 public class ChatUI extends JFrame
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;

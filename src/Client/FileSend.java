@@ -24,13 +24,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileSend
 {
-	// 与文件有关的
 	private File fileout = null;
 	private FileInputStream fileInputStream = null;
 	private BufferedInputStream bufferedInputStreamFile = null;
 	private long fileLength;
 	private String fileName = null;
-	// 与网络有关的
+
 	private DataInputStream inputStream = null;
 	private DataOutputStream outputStream = null;
 	private BufferedOutputStream bufferedOutputStreamNet = null;
@@ -53,14 +52,14 @@ public class FileSend
 	{
 		this.ipString = ipString;
 		this.port = port;
-		frameMain = new JFrame("发送文件");
+		frameMain = new JFrame("File Send");
 		frameMain.setResizable(true);
 		frameMain.getContentPane().setLayout(null);
 		frameMain.setBounds(120, 120, 530, 260);
 		frameMain.setVisible(true);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JLabel lblSelectFile = new JLabel("请选择要发送的文件：");
+		JLabel lblSelectFile = new JLabel("Choose the file：");
 		lblSelectFile.setBounds(10, 34, 178, 15);
 		frameMain.getContentPane().add(lblSelectFile);
 
@@ -69,15 +68,15 @@ public class FileSend
 		frameMain.getContentPane().add(textFieldSelect);
 		textFieldSelect.setColumns(10);
 
-		btnSelect = new JButton("浏览");
+		btnSelect = new JButton("Browse");
 		btnSelect.setBounds(409, 30, 93, 23);
 		frameMain.getContentPane().add(btnSelect);
 
-		btnSend = new JButton("发送");
+		btnSend = new JButton("Send");
 		btnSend.setBounds(409, 81, 93, 23);
 		frameMain.getContentPane().add(btnSend);
 
-		btnCancel = new JButton("取消");
+		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(409, 138, 93, 23);
 		frameMain.getContentPane().add(btnCancel);
 
@@ -142,13 +141,13 @@ public class FileSend
 			}
 			else if (arg0.getSource() == btnCancel)
 			{
-				int n = JOptionPane.showConfirmDialog(frameMain, "确定终止吗？", "终止文件传输", JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(frameMain, "Are you sure to abort？", "File transmission abort!", JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION)
 				{
 					try
 					{
 						socket.close();
-						JOptionPane.showMessageDialog(frameMain, "文件传输中止！" + "文件已传输" + progressBar.getValue() + "%");
+						JOptionPane.showMessageDialog(frameMain, "Transmission abort！" + "File has transmitted" + progressBar.getValue() + "%");
 						frameMain.setVisible(false);
 					}
 					catch (IOException e)
@@ -258,7 +257,7 @@ public class FileSend
 							int n = 0;
 							int i = 0;
 							int progress = 0;
-							// TODO 首先 发送文件名和长度
+
 							outputStream.writeUTF(fileName);
 							outputStream.writeLong(fileLength);
 
