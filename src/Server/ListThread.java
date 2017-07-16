@@ -79,7 +79,9 @@ public class ListThread extends Thread
 						if (fileLock.tryLock()) // trylock won't block if don't
 												// get lock.
 						{
-							userFile = new File("E:\\list.txt"); // all
+
+							userFile = new File(".\\list.txt"); // all 
+
 							BufferedReader userListReader = new BufferedReader(new FileReader(userFile));
 							String temp;
 							while ((temp = userListReader.readLine()) != null)

@@ -49,7 +49,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Font;
+import java.awt.Label;
 
 public class ChatUI extends JFrame
 {
@@ -126,11 +128,11 @@ public class ChatUI extends JFrame
 		fileReceiveWait = new FileReceiveWait("Unkown");
 	}
 
-	public ChatUI() throws IOException
-	{
 
-//		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+	public ChatUI() throws IOException {
+		
+		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		setBounds(100, 100, 580, 450);
 		setResizable(false);
 
@@ -219,17 +221,33 @@ public class ChatUI extends JFrame
 		btnLeave = new JButton("Leave");
 		btnLeave.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnLeave.setBounds(406, 385, 134, 30);
-		btnLeave.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (client != null)
-				{
-					sendMsg.println("CMG");
-					sendMsg.println("offline");
-					// client.exit = true;
-					// client.Exit();
-					// System.exit(0);
+		btnLeave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if ((JButton)e.getSource() == btnLeave) {
+					final Dialog exCheck = new Dialog(ChatUI.this, "Check", true);
+					exCheck.add(new Label("Are u sure that you want to leave?"));
+					exCheck.setBounds(600, 200, 180, 100);
+					exCheck.setLayout(new FlowLayout());
+					JButton yesButton = new JButton("Yes");
+					exCheck.add(yesButton);
+					yesButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							exCheck.dispose();
+							sendMsg.println("CMG");
+							sendMsg.println("offline");
+							//client.exit = true;
+							//client.Exit();
+							System.exit(0);
+						}
+					});
+					JButton noButton = new JButton("No");
+					exCheck.add(noButton);
+					noButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							exCheck.dispose();
+						}
+					});
+					exCheck.setVisible(true);
 				}
 			}
 		});

@@ -41,7 +41,8 @@ public class ClientThread implements Runnable
 		this.area = area;
 		this.m_group = group;
 
-		userFile = new File("E:\\list.txt");
+		
+		userFile = new File(".\\list.txt");
 		if (!userFile.exists())
 		{
 			userFile.createNewFile();
@@ -116,6 +117,7 @@ public class ClientThread implements Runnable
 		}
 
 		System.out.println("CLient thread stop!");
+		
 	}
 
 	private void register() throws IOException
@@ -123,8 +125,8 @@ public class ClientThread implements Runnable
 		// lock
 		synchronized (userFile)
 		{
-			// critical section
-			userFile = new File("E:\\list.txt");
+			//critical section
+			userFile = new  File(".\\list.txt");
 			BufferedReader regList = new BufferedReader(new FileReader(userFile));
 			area.append("Getting information from disk...");
 
@@ -148,7 +150,7 @@ public class ClientThread implements Runnable
 			if (!exist)
 			{
 				area.append("Storing new username...\r\n");
-				PrintWriter writerList = new PrintWriter(new FileOutputStream("E:\\list.txt", true), true);//////////////////////////////////
+				PrintWriter writerList = new PrintWriter(new FileOutputStream(".\\list.txt", true), true);//////////////////////////////////
 				writerList.println(name + "::" + password);
 				m_sender.println("CMG");
 				m_sender.println("Success");
@@ -162,8 +164,8 @@ public class ClientThread implements Runnable
 		String info = null;
 		synchronized (userFile) // lock
 		{
-			// critical section
-			userFile = new File("E:\\list.txt");
+			//critical section
+			userFile = new  File(".\\list.txt");
 			BufferedReader logList = new BufferedReader(new FileReader(userFile));
 			m_user = m_receiver.readLine();
 			m_password = m_receiver.readLine();
@@ -215,6 +217,7 @@ public class ClientThread implements Runnable
 			m_sender.println("CMG");
 			m_sender.println("offline");
 			m_client.close();
+			area.append(m_user + "  logout!\n");
 		}
 		catch (IOException e)
 		{
@@ -294,9 +297,8 @@ public class ClientThread implements Runnable
 			}
 
 		}
-
 		// OFFLINE
-		String path = "D:\\offline\\";
+		String path = ".\\offline\\";
 		String filename = dest + ".log";
 		File offlineData = new File(path, filename);
 		if (!offlineData.exists())
@@ -330,7 +332,7 @@ public class ClientThread implements Runnable
 
 	private void checkOffline() throws IOException
 	{
-		String path = "D:\\offline\\";
+		String path = ".\\offline\\";
 		String filename = m_user + ".log";
 		String tempLine;
 		File offlineData = new File(path + filename);
@@ -372,9 +374,8 @@ public class ClientThread implements Runnable
 				System.out.println(members[i]);
 			}
 			m_group.put(groupName, members);
-			PrintWriter writerList = new PrintWriter(new FileOutputStream("E:\\list.txt", true), true);
+			PrintWriter writerList = new PrintWriter(new FileOutputStream(".:\\list.txt", true), true);
 			writerList.println(groupName + "::" + "null");
-
 		}
 	}
 
@@ -404,5 +405,4 @@ public class ClientThread implements Runnable
 			break;
 		}
 	}
-
 }

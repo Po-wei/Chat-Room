@@ -1,9 +1,4 @@
 
-/**
-注册界面的UI包含了一个SocketClient端,他的工作方式将和ChatRoomUI里获取列表相同，但此处他的工作是发送数据和接收数据，
-它将根据服务端反馈回来的信息判断是否注册成功以及注册的状态，是否已经被注册等等
- * 
- */
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
@@ -45,6 +40,7 @@ public class RegisterUI extends JDialog
 	private BufferedReader receive;
 	private JLabel lblUsername;
 	private JLabel lblPassword;
+	//private JLabel lblPasswordRule;
 	private JPanel buttonPane;
 	private JButton btnSignup;
 
@@ -106,19 +102,34 @@ public class RegisterUI extends JDialog
 			getContentPane().add(buttonPane);
 			{
 				btnSignup = new JButton("Signup");
-				btnSignup.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						if (tfUsername.getText().length() > 0 && tfPassword.getPassword().length > 0)
-						{
-							register();
-						}
-						else
+				btnSignup.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if (tfUsername.getText().length() > 0 && tfPassword.getPassword().length > 0) {
+							String pswValid = new String(tfPassword.getPassword());
+							String validResult = validPassword(pswValid);
+							if (validResult == "Valid") {
+								register();
+							} else {
+								final Dialog exError = new Dialog(RegisterUI.this, "Error", true);
+								exError.add(new Label("Please follow the rule"));
+								exError.setBounds(600, 200, 180, 100);
+								exError.setLayout(new FlowLayout());
+								JButton okButton = new JButton("OK");
+								exError.add(okButton);
+								okButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										exError.dispose();
+									}
+								});
+								exError.setVisible(true);
+							}
+
+						} 
+						else 
 						{
 							final Dialog exError = new Dialog(RegisterUI.this, "Error", true);
 							exError.add(new Label("Please input correct usr and psw"));
-							exError.setBounds(600, 200, 180, 100);
+							exError.setBounds(500, 333, 300, 166);
 							exError.setLayout(new FlowLayout());
 							JButton okButton = new JButton("OK");
 							exError.add(okButton);
@@ -155,17 +166,30 @@ public class RegisterUI extends JDialog
 		tfUsername.setBounds(112, 53, 130, 26);
 		getContentPane().add(tfUsername);
 		tfUsername.setColumns(10);
+		
 		lblUsername = new JLabel("Username:");
 		lblUsername.setBounds(36, 59, 75, 15);
 		getContentPane().add(lblUsername);
+		
 		lblPassword = new JLabel("Password:");
 		lblPassword.setBounds(36, 109, 75, 15);
 		getContentPane().add(lblPassword);
+		
+		/*lblPasswordRule = new JLabel("(Please follow the rule: \n "
+				+ "1. With at least one capital and lowercase letter. \n "
+				+ "2. With at least one number. \n"
+				+ "3. With length between 8 to 16.)");
+		lblPasswordRule.setBounds(36, 124, 75, 15);
+		getContentPane().add(lblPasswordRule);*/
+		
 		tfPassword = new JPasswordField();
 		tfPassword.setBounds(112, 103, 130, 26);
 		getContentPane().add(tfPassword);
-
-		JTextField tfWeak = new JTextField("");
+		tfPassword.setToolTipText("1. With at least one capital and lowercase letters.\n"
+				+ "2. With at least one number.\n"
+				+ "3. Length of Password between 8 to 16.");
+		
+		JTextField tfWeak= new JTextField("");
 		tfWeak.setHorizontalAlignment(SwingConstants.CENTER);
 		tfWeak.setBounds(112, 140, 45, 10);
 		getContentPane().add(tfWeak);
@@ -225,6 +249,50 @@ public class RegisterUI extends JDialog
 		});
 
 	}
+
+	public String validPassword(String pswStr) {
+		String regexValid = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d]).{8,16}$";
+		if (pswStr.matches(regexValid)){
+			return "Valid";
+		} else {
+			return "Unvalid";
+		}
+	}
+	
+    public String checkPassword(String passwordStr) {  
+        String regexZ = "\\d*";  
+        String regexS = "[a-zA-Z]+";  
+        String regexT = "\\W+$";  
+        String regexZT = "\\D*";  
+        String regexST = "[\\d\\W]*";  
+        String regexZS = "\\w*";  
+        String regexZST = "[\\w\\W]*";  
+  
+        if (passwordStr.matches(regexZ)) {  
+            return "weak";  
+        }  
+        if (passwordStr.matches(regexS)) {  
+            return "weak";  
+        }  
+        if (passwordStr.matches(regexT)) {  
+            return "weak";  
+        }  
+        if (passwordStr.matches(regexZT)) {  
+            return "medium";  
+        }  
+        if (passwordStr.matches(regexST)) {  
+            return "medium";  
+        }  
+        if (passwordStr.matches(regexZS)) {  
+            return "medium";  
+        }  
+        if (passwordStr.matches(regexZST)) {  
+            return "strong";  
+        }  
+        return passwordStr;  
+  
+    }  
+
 
 	public String checkPassword(String passwordStr)
 	{
