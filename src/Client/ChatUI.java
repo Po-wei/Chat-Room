@@ -129,7 +129,7 @@ public class ChatUI extends JFrame
 	public ChatUI() throws IOException
 	{
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		setBounds(100, 100, 580, 450);
 		setResizable(false);
@@ -337,7 +337,7 @@ public class ChatUI extends JFrame
 					}
 					inArea.append("you send to " + receieverID + " : " + outArea.getText() + "\n");
 					outArea.setText("");
-					inArea.setCaretPosition(inArea.getText().length());// 控制光标下移
+					inArea.setCaretPosition(inArea.getText().length());
 				}
 			}
 		});
@@ -358,7 +358,7 @@ public class ChatUI extends JFrame
 					String obj = model.getElementAt(index);
 					if (!obj.equals(user))
 					{
-						// userList bianshe
+						// userList 
 						if (obj.charAt(0) == '*')
 							receieverID = obj.substring(1, obj.length());
 						else
@@ -471,6 +471,8 @@ public class ChatUI extends JFrame
 		new Thread(new innerRoomThread()).start();
 
 	}
+	
+	
 
 	private class innerRoomThread implements Runnable
 	{

@@ -84,21 +84,21 @@ public class LoginUI extends JFrame
 	public LoginUI()
 	{
 
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(120, 120, 411, 389);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setTitle("Client User Interface");
 
-		lblServer = new JLabel("Server\uFF1A");
+		lblServer = new JLabel("Server:");
 		lblServer.setLocation(21, 8);
 		lblServer.setSize(81, 43);
 
 		tfServer = new JTextField();
 		tfServer.setLocation(91, 16);
 		tfServer.setSize(134, 27);
-		tfServer.setText("10.5.5.101");
+		tfServer.setText("127.0.0.1");
 		tfServer.setColumns(10);
 
 		btnConnect = new JButton("Connect");

@@ -67,15 +67,15 @@ public class FileSend
 		textFieldSelect.setBounds(177, 31, 213, 21);
 		frameMain.getContentPane().add(textFieldSelect);
 		textFieldSelect.setColumns(10);
-
+		
 		btnSelect = new JButton("Browse");
 		btnSelect.setBounds(409, 30, 93, 23);
 		frameMain.getContentPane().add(btnSelect);
-
+		
 		btnSend = new JButton("Send");
 		btnSend.setBounds(409, 81, 93, 23);
 		frameMain.getContentPane().add(btnSend);
-
+		
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(409, 138, 93, 23);
 		frameMain.getContentPane().add(btnCancel);
