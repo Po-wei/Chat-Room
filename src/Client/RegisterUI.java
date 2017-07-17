@@ -47,36 +47,36 @@ public class RegisterUI extends JDialog
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args)
-	{
-		try
-		{
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-			{
-				if ("Nimbus".equals(info.getName()))
-				{
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			// If Nimbus is not available, you can set the GUI to another look
-			// and feel.
-			System.out.println("theme initialization failed");
-		}
-		try
-		{
-			RegisterUI dialog = new RegisterUI();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args)
+//	{
+//		try
+//		{
+//			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+//			{
+//				if ("Nimbus".equals(info.getName()))
+//				{
+//					UIManager.setLookAndFeel(info.getClassName());
+//					break;
+//				}
+//			}
+//		}
+//		catch (Exception e)
+//		{
+//			// If Nimbus is not available, you can set the GUI to another look
+//			// and feel.
+//			System.out.println("theme initialization failed");
+//		}
+//		try
+//		{
+//			RegisterUI dialog = new RegisterUI();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		}
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the dialog.
@@ -251,7 +251,7 @@ public class RegisterUI extends JDialog
 	}
 
 	public String validPassword(String pswStr) {
-		String regexValid = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d]).{8,16}$";
+		String regexValid = "^(?=.*[a-z])(?=.*[\\d]).{8,16}$";
 		if (pswStr.matches(regexValid)){
 			return "Valid";
 		} else {
@@ -259,41 +259,6 @@ public class RegisterUI extends JDialog
 		}
 	}
 	
-    public String checkPassword(String passwordStr) {  
-        String regexZ = "\\d*";  
-        String regexS = "[a-zA-Z]+";  
-        String regexT = "\\W+$";  
-        String regexZT = "\\D*";  
-        String regexST = "[\\d\\W]*";  
-        String regexZS = "\\w*";  
-        String regexZST = "[\\w\\W]*";  
-  
-        if (passwordStr.matches(regexZ)) {  
-            return "weak";  
-        }  
-        if (passwordStr.matches(regexS)) {  
-            return "weak";  
-        }  
-        if (passwordStr.matches(regexT)) {  
-            return "weak";  
-        }  
-        if (passwordStr.matches(regexZT)) {  
-            return "medium";  
-        }  
-        if (passwordStr.matches(regexST)) {  
-            return "medium";  
-        }  
-        if (passwordStr.matches(regexZS)) {  
-            return "medium";  
-        }  
-        if (passwordStr.matches(regexZST)) {  
-            return "strong";  
-        }  
-        return passwordStr;  
-  
-    }  
-
-
 	public String checkPassword(String passwordStr)
 	{
 		String regexZ = "\\d*";
